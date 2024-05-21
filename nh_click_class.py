@@ -152,10 +152,29 @@ class 기본환경설정:
         pyautogui.press('enter')
         pyautogui.typewrite('vhfptmxm')
 
-    def find_inquiry(self):
-        success=False
+    def new_connection(self):
+        try:
+            connection_error=pyautogui.locateOnScreen(f"{self.image_path}/new_connection.png")
+            connection_center = pyautogui.center(connection_error)
+            pyautogui.click(connection_center)
+            time.sleep(0.1)
 
-        while not success:
+            pyautogui.press('tab')
+            time.sleep(0.1)
+            pyautogui.press('tab')
+            time.sleep(0.1)
+            pyautogui.press('space')
+            time.sleep(0.1)
+            pyautogui.press('enter')
+
+        except Exception as ex:
+            traceback.print_exc()
+
+    def find_inquiry(self):
+
+        success=False
+        retry_count = 0
+        while not success and retry_count<3:
             try:
                 self.pyauto_click_type_sleep(x=self.x,y=self.y,typing="8729",sleep_sec=0.8)
                 inquiry_center = self.uiwork.image_click_and_move("8729.png", 50, 200)
@@ -165,11 +184,8 @@ class 기본환경설정:
                 success = True
 
             except Exception as ex:
-                pyautogui.locateOnScreen(f"{self.image_path}/new_connection.png")
-                pyautogui.press('tab')
-                pyautogui.press('tab')
-                pyautogui.press('space')
-                pyautogui.press('enter')
+                self.new_connection()
+                retry_count += 1
 
         if not success:
                 logger.error(ex)

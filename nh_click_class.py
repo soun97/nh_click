@@ -211,7 +211,7 @@ class 기본환경설정:
         pyautogui.typewrite(typing)
         time.sleep(sleep_sec)
 
-
+###
 
 
 if __name__ == "__main__":
